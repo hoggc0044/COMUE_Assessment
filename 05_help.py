@@ -80,16 +80,16 @@ class Play:
         self.option_frame.grid(row=3)
 
         # Greek option button.
-        self.option1_button = Button(self.option_frame, fg="#FFFFFF", width=17, bg="#276FBF",
+        self.greek_button = Button(self.option_frame, fg="#FFFFFF", width=17, bg="#276FBF",
                                      text="Greek", font=("Arial", "12", "bold"),
                                      command=lambda: self.check_answer("Greek"))
-        self.option1_button.grid(row=0, column=0, padx=5, pady=5)
+        self.greek_button.grid(row=0, column=0, padx=5, pady=5)
 
         # Roman option button.
-        self.option2_button = Button(self.option_frame, fg="#FFFFFF", width=17, bg="#276FBF",
+        self.roman_button = Button(self.option_frame, fg="#FFFFFF", width=17, bg="#276FBF",
                                      text="Roman", font=("Arial", "12", "bold"),
                                      command=lambda: self.check_answer("Roman"))
-        self.option2_button.grid(row=0, column=1)
+        self.roman_button.grid(row=0, column=1)
 
         # Label for displaying the god's name.
         self.god_label = Label(self.quiz_frame, text="god name goes here",
@@ -101,7 +101,7 @@ class Play:
                                        text="When you choose an option,"
                                             "your choice will appear here!",
                                        bg="#DFBA89", width=52, )
-        self.user_choice_label.grid(row=4, padx=5, pady=5)
+        self.user_choice_label.grid(row=5, padx=5, pady=5)
 
         # Frame for round results and navigation.
         self.rounds_frame = Frame(self.quiz_frame)
@@ -122,28 +122,19 @@ class Play:
         self.next_button = Button(self.control_frame, text="NEXT",
                                   fg="#FFFFFF", bg="#DFBA89",
                                   font=("Arial", 11, "bold"),
-                                  width=12, state=DISABLED,
+                                  width=19, state=DISABLED,
                                   padx=3, pady=3,
                                   command=self.new_round)
-        self.next_button.grid(row=0, column=3)
+        self.next_button.grid(row=0, column=2)
 
         # Button for help.
         self.help_button = Button(self.control_frame, text="HELP",
                                   fg="#FFFFFF", bg="#276FBF",
                                   font=("Arial", 11, "bold"),
-                                  width=12,
+                                  width=19,
                                   padx=3, pady=3,
                                   command=self.get_help)
-        self.help_button.grid(row=0, column=2)
-
-        # Button for summary.
-        self.summary_button = Button(self.control_frame, text="SUMMARY",
-                                     fg="#FFFFFF", bg="#BE2727",
-                                     font=("Arial", 11, "bold"),
-                                     width=12,
-                                     padx=3, pady=3,
-                                     command=self.get_summary)
-        self.summary_button.grid(row=0, column=1)
+        self.help_button.grid(row=0, column=1)
 
         # Start the first round.
         self.new_round()
@@ -160,14 +151,14 @@ class Play:
     def new_round(self):
         # Disable the next button at the start of each round.
         self.next_button.config(state=DISABLED)
-        self.option1_button.config(state=NORMAL)
-        self.option2_button.config(state=NORMAL)
+        self.greek_button.config(state=NORMAL)
+        self.roman_button.config(state=NORMAL)
 
         # Check if the quiz is complete.
         if self.rounds_played.get() >= self.rounds_wanted.get():
             self.question_label.config(text="Quiz Complete!")
-            self.option1_button.config(state=DISABLED)
-            self.option2_button.config(state=DISABLED)
+            self.greek_button.config(state=DISABLED)
+            self.roman_button.config(state=DISABLED)
             self.user_choice_label.config(text=f"Your Score: {self.user_score} out of {self.rounds_wanted.get()}")
             return
 
@@ -205,18 +196,13 @@ class Play:
         # Update the rounds played and enable the next button.
         self.rounds_played.set(self.rounds_played.get() + 1)
         self.next_button.config(state=NORMAL)
-        self.option1_button.config(state=DISABLED)
-        self.option2_button.config(state=DISABLED)
+        self.greek_button.config(state=DISABLED)
+        self.roman_button.config(state=DISABLED)
 
     # Static method for displaying help (placeholder).
 
     def get_help(self):
         DisplayHelp(self)
-
-    # Static method for displaying summary (placeholder).
-    @staticmethod
-    def get_summary():
-        print("ERROR: 404 - Summary not found")
 
     # Method to close the quiz window.
     def close_play(self):

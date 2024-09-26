@@ -10,17 +10,17 @@ import random
 class ChooseRounds:
     def __init__(self):
         # invoke play class with three rounds for testing purposes.
-        self.to_play(5)
+        self.to_quiz(5)
 
-    def to_play(self, num_rounds):
-        Play(num_rounds)
+    def to_quiz(self, num_rounds):
+        Quiz(num_rounds)
 
         # Hide root window (ie: hide rounds option window).
         root.withdraw()
 
 
 # The Play class handles the main gameplay.
-class Play:
+class Quiz:
     def __init__(self, how_many):
         background = "#F6ECDB"
         # Initialize the user's score.
@@ -29,7 +29,7 @@ class Play:
         self.play_box = Toplevel()
 
         # If users press cross at top, closes help
-        self.play_box.protocol('WM_DELETE_WINDOW', partial(self.close_play))
+        self.play_box.protocol('WM_DELETE_WINDOW', partial(self.close_quiz))
 
         # Variables used to work out statistics, when game ends etc
         self.rounds_wanted = IntVar()
@@ -101,7 +101,7 @@ class Play:
                                        text="When you choose an option,"
                                             "your choice will appear here!",
                                        bg="#DFBA89", width=52,)
-        self.user_choice_label.grid(row=4, padx=5, pady=5)
+        self.user_choice_label.grid(row=5, padx=5, pady=5)
 
         # Frame for round results and navigation.
         self.rounds_frame = Frame(self.quiz_frame)
@@ -122,28 +122,19 @@ class Play:
         self.next_button = Button(self.control_frame, text="NEXT",
                                   fg="#FFFFFF", bg="#DFBA89",
                                   font=("Arial", 11, "bold"),
-                                  width=12, state=DISABLED,
+                                  width=19, state=DISABLED,
                                   padx=3, pady=3,
                                   command=self.new_round)
-        self.next_button.grid(row=0, column=3)
+        self.next_button.grid(row=0, column=2)
 
         # Button for help.
         self.help_button = Button(self.control_frame, text="HELP",
                                   fg="#FFFFFF", bg="#276FBF",
                                   font=("Arial", 11, "bold"),
-                                  width=12,
+                                  width=19,
                                   padx=3, pady=3,
                                   command=self.get_help)
-        self.help_button.grid(row=0, column=2)
-
-        # Button for summary.
-        self.summary_button = Button(self.control_frame, text="SUMMARY",
-                                     fg="#FFFFFF", bg="#BE2727",
-                                     font=("Arial", 11, "bold"),
-                                     width=12,
-                                     padx=3, pady=3,
-                                     command=self.get_summary)
-        self.summary_button.grid(row=0, column=1)
+        self.help_button.grid(row=0, column=1)
 
         # Start the first round.
         self.new_round()
@@ -209,18 +200,66 @@ class Play:
         self.option2_button.config(state=DISABLED)
 
     # Static method for displaying help (placeholder).
-    @staticmethod
-    def get_help():
-        print("ERROR: 404 - Help not found")
-
-    # Static method for displaying summary (placeholder).
-    @staticmethod
-    def get_summary():
-        print("ERROR: 404 - Summary not found")
+    def get_help(self):
+        DisplayHelp(self)
 
     # Method to close the quiz window.
-    def close_play(self):
+    def close_quiz(self):
         root.destroy()
+
+
+class DisplayHelp:
+    def __init__(self, partner):
+        # setup dialogue box and background colour
+        background = "#F6ECDB"
+        self.help_box = Toplevel()
+
+        # disable help button
+        partner.help_button.config(state=DISABLED)
+
+        # If users press cross at top, closes help and
+        # 'releases' help button
+        self.help_box.protocol('WM_DELETE_WINDOW',
+                               partial(self.close_help, partner))
+
+        self.help_frame = Frame(self.help_box, width=500,
+                                height=400,
+                                bg=background)
+        self.help_frame.grid()
+
+        self.help_heading_label = Label(self.help_frame,
+                                        bg=background,
+                                        text="HELP ME G",
+                                        font=("Arial", "14", "bold"))
+        self.help_heading_label.grid(row=0)
+
+        help_text = "Playing this quiz is quite simple." \
+                    "Your task is to try and answer as many questions as you can correctly, \n" \
+                    "and try to beat your previous scores. \n" \
+                    "When running the game, you'll be given three round \n" \
+                    "options - 5, 10 or a custom amount (1-100). \n" \
+                    "Choose your rounds to start the quiz."
+
+        self.help_text_label = Label(self.help_frame, bg=background,
+                                     text=help_text, wraplength=350,
+                                     justify="left")
+        self.help_text_label.grid(row=1, padx=10)
+
+        self.dismiss_button = Button(self.help_frame,
+                                     font=("Arial", "12", "bold"),
+                                     text="Dismiss", bg="#276FBF",
+                                     fg="#FFFFFF",
+                                     command=partial(self.close_help,
+                                                     partner))
+        self.dismiss_button.grid(row=2, padx=10, pady=10)
+
+
+# closes help dialogue (used by button and x at top of dialogue)
+    def close_help(self, partner):
+        # Put help button back to normal...
+
+        partner.help_button.config(state=NORMAL)
+        self.help_box.destroy()
 
 
 # Main routine to start the program.
