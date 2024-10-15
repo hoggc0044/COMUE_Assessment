@@ -44,10 +44,11 @@ class ChooseRounds:
         self.output_label.grid(row=3)
 
         btn_colour_value = [
-            ["#BE2727", 5], ["#276FBF", 10], ["#DFBA89", "Custom"]
+            ["#BE2727", 5],
+            ["#276FBF", 10]
         ]
 
-        for item in range(0, 3):
+        for item in range(0, 2):
             self.rounds_button = Button(self.how_many_frame,
                                         fg=button_fg,
                                         bg=btn_colour_value[item][0],
@@ -57,6 +58,15 @@ class ChooseRounds:
                                         )
             self.rounds_button.grid(row=0, column=item,
                                     padx=5, pady=5)
+
+        self.custom_button = Button(self.how_many_frame,
+                                    bg="#DFBA89",
+                                    fg=button_fg, text="Custom",
+                                    font=button_font, width=10,
+                                    command=lambda: self.custom_rounds()
+                                    )
+        self.custom_button.grid(row=0, column=2,
+                                padx=5, pady=5)
 
     # Custom rounds - When "Custom" is clicked, should open a second window
     def custom_rounds(self):
@@ -103,16 +113,23 @@ class ChooseRounds:
         try:
             num_rounds = int(self.entry.get())
             if 1 <= num_rounds <= 100:
-                print("You Chose {} rounds".format(num_rounds))
+                self.to_quiz(num_rounds)
                 self.custom_window.destroy()
             else:
                 has_error = "yes"
-                self.var_feedback.set("Please enter a number between 1 and 100.")
+                self.var_feedback.set("ERROR: \n"
+                                      "Oops! It looks like you've entered a value\n"
+                                      "that is below the minimum or above the\n"
+                                      "maximum number of rounds.\n"
+                                      "Please try again")
                 self.output_label.config(fg="#9C0000")
                 self.entry.config(bg="#F8CE00")
         except ValueError:
             has_error = "yes"
-            self.var_feedback.set("ERROR - Please ensure you have entered a number.")
+            self.var_feedback.set("ERROR: \n"
+                                  "Oops! That isn't right!\n"
+                                  "Please try again using\n"
+                                  "a whole number.")
             self.output_label.config(fg="#9C0000")
             self.entry.config(bg="#F8CE00")
 
