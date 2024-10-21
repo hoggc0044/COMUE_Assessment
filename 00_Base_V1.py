@@ -34,7 +34,7 @@ class ChooseRounds:
                                                wraplength=300, justify="left")
         self.choose_instructions_label.grid(row=1)
 
-        # Rounds buttons...
+        # Setting up the "how many" frame
         self.how_many_frame = Frame(self.intro_frame)
         self.how_many_frame.grid(row=2)
 
@@ -69,7 +69,7 @@ class ChooseRounds:
 
     # Custom rounds - When "Custom" is clicked, should open a second window
     def custom_rounds(self):
-        self.custom_window = Toplevel(root)
+        self.custom_window = Toplevel()
         self.custom_window.title("Enter Number of Rounds")
 
         self.label = Label(self.custom_window, text="Enter a number (max 100):")
@@ -116,6 +116,7 @@ class ChooseRounds:
             if 1 <= num_rounds <= 100:
                 self.to_quiz(num_rounds)
                 self.custom_window.destroy()
+                self.custom_button.config(state=NORMAL)
             else:
                 has_error = "yes"
                 self.var_feedback.set("ERROR: \n"
@@ -224,14 +225,14 @@ class Quiz:
 
         # Greek option button.
         self.greek_button = Button(self.option_frame, fg="#FFFFFF", width=17, bg="#276FBF",
-                                     text="Greek", font=("Arial", "12", "bold"),
-                                     command=lambda: self.check_answer("Greek"))
+                                   text="Greek", font=("Arial", "12", "bold"),
+                                   command=lambda: self.check_answer("Greek"))
         self.greek_button.grid(row=0, column=0, padx=5, pady=5)
 
         # Roman option button.
         self.roman_button = Button(self.option_frame, fg="#FFFFFF", width=17, bg="#276FBF",
-                                     text="Roman", font=("Arial", "12", "bold"),
-                                     command=lambda: self.check_answer("Roman"))
+                                   text="Roman", font=("Arial", "12", "bold"),
+                                   command=lambda: self.check_answer("Roman"))
         self.roman_button.grid(row=0, column=1, padx=5, pady=5)
 
         # Label for displaying the user's choice and result.
@@ -401,8 +402,7 @@ class DisplayHelp:
                                                      partner))
         self.dismiss_button.grid(row=2, padx=10, pady=10)
 
-
-# closes help dialogue (used by button and x at top of dialogue)
+    # closes help dialogue (used by button and x at top of dialogue)
     def close_help(self, partner):
         # Put help button back to normal...
 
@@ -416,4 +416,3 @@ if __name__ == "__main__":
     root.title("Greek Gods Quiz")
     ChooseRounds()
     root.mainloop()
-

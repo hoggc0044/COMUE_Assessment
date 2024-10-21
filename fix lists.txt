@@ -1,0 +1,5 @@
+- change location of god name (done)
+- change colour of feedback (done)
+- start over? (done)
+
+- left align error text (almost)
